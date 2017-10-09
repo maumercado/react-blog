@@ -7,6 +7,8 @@ export const GET_POST = 'get_post';
 export const GET_POST_ERROR = 'get_post_error';
 export const DELETE_POST = 'delete_post';
 export const DELETE_POST_ERROR = 'delete_post_error';
+export const SELECT_POST = 'select_post';
+export const DESELECT_POST = 'deselect_post';
 
 const API_KEY = '?key=constatine';
 const BASE_URL = 'http://reduxblog.herokuapp.com/api';
@@ -60,7 +62,7 @@ export const createPosts = (values, cb) => {
         try {
             const data = await axios.post(url, values);
             dispatch(createPostsSuccess(data));
-            cb();
+            if (cb) cb();
         } catch (err) {
             dispatch(createPostsError(err));
         }
@@ -117,9 +119,23 @@ export const deletePost = (id, cb) => {
         try {
             await axios.delete(url);
             dispatch(deletePostSuccess(id));
-            cb();
+            if (cb) cb();
         } catch (err) {
             dispatch(deletePostsError(err));
         }
     };
 };
+
+export const selectPost = (id) => {
+    return {
+        type: SELECT_POST,
+        payload: id
+    };
+}
+
+export const deselectPost = (id) => {
+    return {
+        type: DESELECT_POST,
+        payload: id
+    };
+}
